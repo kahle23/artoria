@@ -5,6 +5,7 @@ import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
 
 import java.lang.reflect.Type;
+import java.util.List;
 
 import static artoria.common.Constants.EMPTY_STRING;
 
@@ -36,9 +37,21 @@ public class ActionUtils {
         getActionProvider().registerHandler(actionName, actionHandler);
     }
 
+    @Deprecated
+    public static void registerHandler(Class<?> type, ActionHandler actionHandler) {
+        Assert.notNull(type, "Parameter \"type\" must not null. ");
+        getActionProvider().registerHandler("class:" + type.getName(), actionHandler);
+    }
+
     public static void deregisterHandler(String actionName) {
 
         getActionProvider().deregisterHandler(actionName);
+    }
+
+    @Deprecated
+    public static void deregisterHandler(Class<?> type) {
+        Assert.notNull(type, "Parameter \"type\" must not null. ");
+        getActionProvider().deregisterHandler("class:" + type.getName());
     }
 
     public static ActionHandler getActionHandler(String actionName) {
@@ -65,6 +78,30 @@ public class ActionUtils {
     public static <T> T execute(Object input, Type type) {
 
         return getActionProvider().execute(input, EMPTY_STRING, EMPTY_STRING, type);
+    }
+
+    @Deprecated
+    public static <T> T info(Object input, String actionName, Class<T> clazz) {
+
+        return getActionProvider().info(input, actionName, clazz);
+    }
+
+    @Deprecated
+    public static <T> T info(Object input, Class<T> clazz) {
+
+        return getActionProvider().info(input, EMPTY_STRING, clazz);
+    }
+
+    @Deprecated
+    public static <T> List<T> search(Object input, String actionName, Class<T> clazz) {
+
+        return getActionProvider().search(input, actionName, clazz);
+    }
+
+    @Deprecated
+    public static <T> List<T> search(Object input, Class<T> clazz) {
+
+        return getActionProvider().search(input, EMPTY_STRING, clazz);
     }
 
 }
